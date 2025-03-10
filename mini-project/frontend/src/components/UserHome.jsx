@@ -85,6 +85,37 @@ function UserHome() {
           ))}
         </div>
       </div>
+       {/* How does it works */}
+       <div className="py-12 bg-gray-100 text-center px-6">
+  <h2 className="text-3xl font-bold mb-8">How Does It Work?</h2>
+
+  <div className="relative max-w-3xl mx-auto">
+    <div className="border-l-4 border-blue-500 absolute h-full left-1/2 transform -translate-x-1/2"></div>
+    
+    {steps.map((step, index) => (
+      <div key={index} className={`flex flex-col items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} mb-8 relative` }>
+        <div className="bg-white p-6 border-2 rounded-xl shadow-lg w-64 text-center z-10 md:w-80 md:mx-4">
+          <h3 className="text-xl font-semibold">{step.title}</h3>
+          <p className="text-gray-600 mt-2">{step.desc}</p>
+        </div>
+        <div className="w-6 h-6 bg-blue-500 rounded-full absolute left-1/2 transform -translate-x-1/2 md:-translate-x-1/2"></div>
+      </div>
+    ))}
+  </div>
+</div>
+ {/* what we do */}
+ <div className="py-12 bg-white text-center px-6">
+                <h2 className="text-3xl font-bold mb-6">What We Do</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {whatWeDo.map((item, index) => (
+                        <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+                            <div className="text-5xl p-3 rounded-full inline-block">{item.icon}</div>
+                            <h3 className="text-xl font-semibold mt-3">{item.title}</h3>
+                            <p className="text-gray-600 mt-2">{item.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
     </>
   );
 }

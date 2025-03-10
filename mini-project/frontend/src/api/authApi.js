@@ -12,7 +12,7 @@ export const register = async (data) => {
     }
 }
 
-export const login = async (data)=>{
+export const userlogin = async (data)=>{
     try {
         const response = await axios.post(`${url}/auth/login`,data)
         return response

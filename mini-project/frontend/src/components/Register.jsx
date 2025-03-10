@@ -20,7 +20,6 @@ function Register() {
     };
 
     const validateForm = () => {
-       
         if (!formData.fullName) {
             setError("Full Name is required");
             return false;
@@ -45,15 +44,22 @@ function Register() {
         return true;
     };
 
-    const handleSubmit =  async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const response = await register (formData);
+                const response = await register(formData);
                 if (response.status === 201) {
-
                     alert("Sign up Successful!");
-                    navigate("/UserHome");
+
+                    
+                    // Store token and user details in localStorage
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("userFullName", formData.fullName);
+                localStorage.setItem("userEmail", formData.email);
+
+                    navigate("/"); // Redirect to homepage
+                    window.dispatchEvent(new Event("storage"));  // 🚀 Notify other components that localStorage has changed
                 } else {
                     setError(response.data.error || "Registration failed");
                 }
@@ -85,7 +91,7 @@ function Register() {
                     </div>
                     <div className="mb-4">
                         <input 
-                            type="text" name="dob" placeholder='Date of Birth'
+                            type="date" name="dob" placeholder='Date of Birth'
                             className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400" 
                             value={formData.dob} onChange={handleChange} 
                         />
