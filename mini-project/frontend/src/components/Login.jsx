@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { login } from '../api/authApi';
 
 function Login() {
+
     const navigate = useNavigate()
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await login({ email, password });
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("role", res.data.role);
+            navigate(res.data.role === "admin" ? "/admin-dashboard" : "/user-home");
+        } catch (error) {
+            alert("Invalid credentials");
+        }
+    };
+    
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">

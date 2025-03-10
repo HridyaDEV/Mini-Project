@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../api/userApi';
+import { register } from '../api/authApi';
 
 function Register() {
     const navigate = useNavigate();
@@ -49,7 +49,7 @@ function Register() {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const response = await register(formData);
+                const response = await register (formData);
                 if (response.status === 201) {
 
                     alert("Sign up Successful!");
