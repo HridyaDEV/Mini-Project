@@ -22,15 +22,44 @@ exports.registerUser = async (req , res) => {
     }
 }
 
-exports. viewUserProfile = async (req,res) =>{
+exports.getUserProfile = async (req,res) =>{
+   try {
+    
+    const user = await User.findById(req.params.id)
+    if (!user){
+        return res.status(400).json({message:"User not found"})
+    }
+    res.status(200).json({
+        fullName: user.fullName,
+        mobile: user.mobile,
+        dob:user.dob,
+        email: user.email,
+        password: user.password,
+        address:user.address || "",
+        state : user.state || "",
+        idproof : user.idproof || "",
+        idnumber : user.idnumber || ""
+    })
+   } catch (error) {
+    res.status(500).json({message:"Error fetching user", error : error.message})
+    
+   }
+}
+
+exports.updateUserProfile = async (req,res) => {
     try {
-        const {id} = req.params
-        const userData = await User.findById(id)
-        if(!userData){
-            return res.status(400).json({message:"No data found"})
+        const userId = req.params.id
+        const updateData = req.body
+
+        const updatedUser = await User.findByIdAndUpdate(userId, updateData,{ new : true})
+
+        if(!updatedUser){
+            return res.status(404).json({message:"user not found"})
         }
-        res.status(200).json(userData)
+
+        res.status(200).json({message:"Profile updated Successfuly", user: updatedUser})
+
     } catch (error) {
-       res.status(500).json({message:"Error while fetching data"}) 
+        res.status(500).json({message:"Error updating profile", error: error.message})
     }
 }

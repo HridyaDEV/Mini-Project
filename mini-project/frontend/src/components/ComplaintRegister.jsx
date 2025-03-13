@@ -17,9 +17,11 @@ function ComplaintRegister() {
       formData.append("complaint", complaint);
       formData.append("place", place);
       formData.append("date", date);
-      if (proof) {
+      if(proof){
         formData.append("proof", proof);
+
       }
+      
 
       const response = await submitComplaint(formData);
 

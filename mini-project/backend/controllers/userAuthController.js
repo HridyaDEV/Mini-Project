@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 exports.register = async (req, res) => {
 
     try {
-        const { fullName, mobile, dob, email, password, role } = req.body;
+        const { fullName, mobile, dob, email, password } = req.body;
 
 
         if (!fullName || !mobile || !dob || !email || !password) {
@@ -18,12 +18,8 @@ exports.register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // if no role is provided, default to user
 
-        const userRole = role || "user"
-
-
-        const newUser = new User({ fullName, mobile, dob, email, password: hashedPassword, userRole });
+        const newUser = new User({ fullName, mobile, dob, email, password: hashedPassword, role :"user" });
         await newUser.save();
 
         res.status(201).json({ message: "User registered successfully" });
@@ -51,12 +47,19 @@ exports.login = async (req,res)=>{
 
         const token = jwt.sign(
             {
-                userId: user._id, role:user.role
+                userId: user._id,
+                 role:user.role
+
             },
             process.env.JWT_KEY,
             {expiresIn:process.env.EXPIRING}
         )
-        res.status(200).json({message:"Login successful"})
+        res.status(200).json({
+            message:"Login successful",
+            token,
+            userFullName : user.fullName,
+            userId : user._id
+        })
     } catch (error) {
         res.status(500).json({message:" Error occured", error: error.message})
     }

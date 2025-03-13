@@ -11,13 +11,25 @@ function Login() {
         e.preventDefault();
         try {
             const res = await userlogin({ email, password });
+            console.log("API Response:", res.data);
+            
+            if (res.data.token && res.data.userFullName && res.data.userId){
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("role", res.data.role);
+            localStorage.setItem("userFullName",res.data.userFullName)
+            localStorage.setItem("userId", res.data.userId);
             
+            window.dispatchEvent(new Event("storage"));
             // Navigate to home page after login
             navigate("/");
-            window.location.reload(); // Ensures UI updates immediately
-        } catch (error) {
+            // window.location.reload(); 
+            }
+            else{
+                    alert("invalid responses from server")
+            }
+        }// Ensures UI updates immediately
+         catch (error) {
+            console.error("Login Error:", error);
             alert("Invalid credentials");
         }
     };

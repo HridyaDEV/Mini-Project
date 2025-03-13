@@ -18,6 +18,7 @@ export const userlogin = async (data)=>{
         return response
         
     } catch (error) {
-        return error
+        console.error("Login API Error:", error.response?.data || error.message);
+        return error.response ? error.response.data : { message: "Something went wrong" };
     }
 }

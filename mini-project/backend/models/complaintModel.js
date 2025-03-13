@@ -1,23 +1,28 @@
     const mongoose = require("mongoose")
 
     const complaintSchema = new mongoose.Schema({
+
+        createdBy:{
+            type: mongoose.Schema.Types.ObjectId,
+            required:true
+        },
         model: {
-            type: "String",
+            type: String,
             required: true
         },
         complaint: {
-            type: "String",
+            type: String,
             required: true
         },
         place: {
-            type: "String",
+            type: String,
             required: true
         },
         date: {
-            type: "String",
+            type: String,
             required: true
         },
-        proof: { type: "String" }
+        proof: { type: String }
 
     })
 

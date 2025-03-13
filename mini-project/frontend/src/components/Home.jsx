@@ -9,12 +9,17 @@ import { useNavigate } from 'react-router-dom';
 function Home() {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"))
+  const [userName, setUserName] = useState("")
 
 
   useEffect(() => {
     const checkLoginStatus = () => {
-        setIsLoggedIn(!!localStorage.getItem("token"));
+
+      const token = localStorage.getItem("token");
+      const storedName = localStorage.getItem("userFullName");
+      setIsLoggedIn(!!token);
+      setUserName(storedName || "");
     };
 
     checkLoginStatus(); // Run on initial load
@@ -23,14 +28,17 @@ function Home() {
     window.addEventListener("storage", checkLoginStatus);
 
     return () => window.removeEventListener("storage", checkLoginStatus);
-}, []);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    setIsLoggedIn(false);
-    navigate("/");
-    window.location.reload(); // Ensures UI updates immediately
+    localStorage.removeItem("token")
+    localStorage.removeItem("name")
+    localStorage.removeItem("userEmail")
+    localStorage.removeItem("userFullName"); // Remove all stored user data
+
+    setIsLoggedIn(false)
+    setUserName("")
+    navigate("/")
   };
 
   const cardSection = [
@@ -54,7 +62,7 @@ function Home() {
     <>
       {/* Navbar */}
       <nav className='mt-5 flex justify-between items-center px-10'>
-        <h1 className="text-xl font-bold">Civic Eye</h1>
+        <h1 className="text-3xl font-extrabold">Civic<span className='text-blue-400'>Eye</span></h1>
         <ul className='flex gap-10'>
           <li className="border border-transparent hover:border-black cursor-pointer">Home</li>
           <li className="border border-transparent hover:border-black cursor-pointer">About</li>
@@ -63,29 +71,29 @@ function Home() {
 
         {!isLoggedIn ? (
           <div className="flex gap-5">
-            <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/login")}>
+            {/* <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/login")}>
               Login
-            </button>
-            <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/register")}>
+            </button> */}
+            <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/register")}>
               Sign Up
             </button>
           </div>
         ) : (
           <div className='relative flex items-center gap-6'>
-            <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/complaint")}>
+            <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/complaint")}>
               File a Complaint
             </button>
-            <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/my-complaints")}>
+            <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/mycomplaints")}>
               My Complaints
             </button>
             <button onClick={() => setDropdownOpen(!dropdownOpen)}>
               <IoPersonSharp className='text-2xl border border-transparent hover:border-black cursor-pointer' />
             </button>
             {dropdownOpen && (
-              <div className='absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md border'>
+              <div className='absolute right-0 mt-2 w-40 top-10 bg-white shadow-md rounded-md border z-50'>
                 <ul>
                   <li
-                    className='px-4 py-2 hover:bg-gray-200 cursor-pointer'
+                    className='px-4 py-2 hover:bg-gray-200 cursor-pointer' 
                     onClick={() => { navigate(`/profile`); setDropdownOpen(false); }}
                   >
                     View Profile
@@ -105,9 +113,11 @@ function Home() {
 
       {/* Hero Section */}
       <div className="bg-black text-white flex flex-col items-center justify-center h-78 mt-4 px-4 text-center">
-        <h1 className="text-3xl font-semibold mb-2">Safe Communities Start with You!</h1>
+        {isLoggedIn && <span className="font-bold text-2xl">Welcome, {userName}</span>}
+        <h1 className="text-3xl font-semibold mb-2 mt-3">Safe Communities Start with You!</h1>
         <h1 className="text-3xl font-semibold mb-4">Report and Make an Impact</h1>
       </div>
+
       {/* about us */}
       <div className="py-10 bg-white text-center px-6">
         <h2 className="text-3xl font-bold mb-4">About Us</h2>
@@ -117,6 +127,21 @@ function Home() {
           With a focus on transparency, accountability, and efficiency, we strive to make a meaningful impact in public safety and social responsibility.
         </p>
       </div>
+
+      {/* what we do */}
+      <div className="py-12 bg-white text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">What We Do</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {whatWeDo.map((item, index) => (
+            <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+              <div className="text-5xl p-3 rounded-full inline-block">{item.icon}</div>
+              <h3 className="text-xl font-semibold mt-3">{item.title}</h3>
+              <p className="text-gray-600 mt-2">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* How does it works */}
       <div className="py-12 bg-gray-100 text-center px-6">
         <h2 className="text-3xl font-bold mb-8">How Does It Work?</h2>
