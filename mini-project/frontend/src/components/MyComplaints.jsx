@@ -17,7 +17,7 @@ function MyComplaints() {
     return (
         <div className='flex flex-col items-center mt-8'>
             <h2 className='text-2xl font-semibold mb-4'>My Complaints</h2>
-            {complaints.lenght === 0 ? (
+            {complaints.length === 0 ? (
                 <p>No complaints found!</p>
             ) : (
                 <div className='w-3/4'>
