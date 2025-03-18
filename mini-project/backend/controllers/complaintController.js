@@ -82,7 +82,7 @@ exports.getUserComplaints = async (req, res) =>{
 
     res.status(200).json({ complaints });
 } catch (error) {
-    console.error("❌ Error fetching complaints:", error);
+    console.error(" Error fetching complaints:", error);
     res.status(500).json({ message: "Error fetching complaints", error: error.message });
 }
 }

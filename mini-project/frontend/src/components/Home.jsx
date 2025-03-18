@@ -71,9 +71,6 @@ function Home() {
 
         {!isLoggedIn ? (
           <div className="flex gap-5">
-            {/* <button className="border px-4 py-1 rounded-md hover:border-black" onClick={() => navigate("/login")}>
-              Login
-            </button> */}
             <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/register")}>
               Sign Up
             </button>
@@ -174,6 +171,7 @@ function Home() {
           ))}
         </div>
       </div>
+      
     </>
   );
 }

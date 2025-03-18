@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Profile from './components/Profile'
 import ComplaintRegister from './components/ComplaintRegister'
 import MyComplaints from './components/MyComplaints'
+import AdminDashboard from './components/AdminDashboard'
 
 function App() {
  
@@ -21,6 +22,7 @@ function App() {
     <Route path='/profile/:id?' element={<Profile/>}/>
     <Route path='/complaint' element={<ComplaintRegister/>}/>
     <Route path = '/mycomplaints' element = {<MyComplaints/>}/>
+    <Route path = '/admin' element = {<AdminDashboard/>}/>
    </Routes>
      </BrowserRouter>
     </>
