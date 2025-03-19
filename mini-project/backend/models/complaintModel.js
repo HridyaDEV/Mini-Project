@@ -22,7 +22,13 @@ const complaintSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    proof: { type: String },
+    status: {
+        type: String,
+        default: "Pending"
+    },
+    proof: {
+        type: String
+    },
 
 }, { timestamps: true }
 

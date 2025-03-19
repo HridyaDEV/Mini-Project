@@ -77,9 +77,9 @@ function Home() {
           </div>
         ) : (
           <div className='relative flex items-center gap-6'>
-            <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/complaint")}>
+            {/* <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/complaint")}>
               File a Complaint
-            </button>
+            </button> */}
             <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/mycomplaints")}>
               My Complaints
             </button>
@@ -113,6 +113,14 @@ function Home() {
         {isLoggedIn && <span className="font-bold text-2xl">Welcome, {userName}</span>}
         <h1 className="text-3xl font-semibold mb-2 mt-3">Safe Communities Start with You!</h1>
         <h1 className="text-3xl font-semibold mb-4">Report and Make an Impact</h1>
+        {isLoggedIn && (
+    <button
+      className="border px-6 py-2 mt-3 rounded-md bg-white text-black font-bold hover:bg-gray-300"
+      onClick={() => navigate("/complaint")}
+    >
+      File a Complaint
+    </button>
+  )}
       </div>
 
       {/* about us */}
@@ -171,7 +179,7 @@ function Home() {
           ))}
         </div>
       </div>
-      
+      <button onClick={()=> navigate("/admin")}>Admin</button>
     </>
   );
 }

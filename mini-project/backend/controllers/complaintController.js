@@ -45,6 +45,7 @@ exports.submitComplaint = async (req, res) => {
             place,
             date,
             proof: `/uploads/${req.file.filename}`,
+            status: "Pending"
         });
 
         await newComplaint.save();
@@ -78,7 +79,7 @@ exports.getUserComplaints = async (req, res) =>{
     }
     const userId = decoded.userId
 
-    const complaints = await Complaint.find({ createdBy: userId })
+    const complaints = await Complaint.find({ createdBy: userId }).select('model complaint place date status createdAt proof')
 
     res.status(200).json({ complaints });
 } catch (error) {

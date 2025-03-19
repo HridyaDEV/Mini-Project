@@ -19,7 +19,6 @@ function Profile() {
     useEffect(() => {
         const fetchProfile = async () => {
             if (!userId) {
-                console.error("❌ No User ID found in localStorage!");
                 return;
             }
 
@@ -36,8 +35,6 @@ function Profile() {
                         idproof: response.idproof || "",
                         idnumber: response.idnumber || ""
                     });
-                } else {
-                    console.error("User profile not found.");
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -66,15 +63,28 @@ function Profile() {
             console.error("Error updating profile:", error);
             alert("Error updating profile.");
         }
-    };
+    }
+
+    const states = [
+        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
+        "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+        "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+        "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+        "Uttar Pradesh", "Uttarakhand", "West Bengal"
+    ]
+
+    const idProofOptions = ["Aadhar Card", "PAN Card", "Voter ID", "Passport",
+        "Driving License"
+    ];
+
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-md mt-10">
-            <h2 className="text-3xl font-bold text-center mb-6">Profile Details</h2>
+        <div className="max-w-4xl mx-auto p-8 shadow-xl bg-white  rounded-lg mt-10 border border-gray-200">
+            <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">Profile Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <div className="mb-4">
-                        <label className="text-gray-600">Full Name</label>
+                        <label className="text-gray-600 capitalize">Full Name</label>
                         <input
                             type="text"
                             name="fullName"
@@ -84,7 +94,7 @@ function Profile() {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="text-gray-600">Mobile Number</label>
+                        <label className="text-gray-600 capitalize">Mobile Number</label>
                         <input
                             type="text"
                             name="mobile"
@@ -94,7 +104,7 @@ function Profile() {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="text-gray-600">Date of Birth</label>
+                        <label className="text-gray-600 capitalize">Date of Birth</label>
                         <input
                             type="text"
                             name="dob"
@@ -104,7 +114,7 @@ function Profile() {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="text-gray-600">Email</label>
+                        <label className="text-gray-600 capitalize">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -127,28 +137,37 @@ function Profile() {
                             readOnly={!isEditing}
                         />
                     </div>
+
                     <div className="mb-4">
                         <label className="text-gray-600">State</label>
-                        <input
-                            type="text"
-                            name="state"
-                            value={formData.state}
-                            onChange={handleChange}
-                            className={`w-full p-3 border border-gray-300 rounded-md ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                            readOnly={!isEditing}
-                        />
+                        <select name="state" value={formData.state} onChange={handleChange} className={`w-full p-3 border border-gray-300 rounded-md ${isEditing ? "bg-white" : "bg-gray-100"}`} disabled={!isEditing}>
+                            <option value="">Select State</option>
+                            {states.map(state => <option key={state} value={state}>{state}</option>)}
+                        </select>
                     </div>
+
+
+
                     <div className="mb-4">
-                        <label className="text-gray-600">ID Proof</label>
-                        <input
-                            type="text"
+                        <label className="text-gray-600 font-medium">ID Proof</label>
+                        <select
                             name="idproof"
                             value={formData.idproof}
                             onChange={handleChange}
-                            className={`w-full p-3 border border-gray-300 rounded-md ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                            readOnly={!isEditing}
-                        />
+                            className={`w-full p-3 border border-gray-300 rounded-md transition-all duration-200 focus:outline-none ${isEditing ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                                }`}
+                            disabled={!isEditing}
+                        >
+                            <option value="">Select ID Proof</option>
+                            {idProofOptions.map((id, index) => (
+                                <option key={index} value={id} className="text-gray-700">
+                                    {id}
+                                </option>
+                            ))}
+                        </select>
                     </div>
+
+
                     <div className="mb-4">
                         <label className="text-gray-600">ID Number</label>
                         <input
@@ -167,7 +186,7 @@ function Profile() {
             <div className="text-center mt-6">
                 {isEditing ? (
                     <button
-                        className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition mr-3"
+                        className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition "
                         onClick={handleSave}
                     >
                         Save
