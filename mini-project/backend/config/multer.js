@@ -11,6 +11,17 @@ const storage = multer.diskStorage({
   },
 });
 
+// File filter to accept only images and videos
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "video/mp4", "video/mkv"];
+  
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Invalid file type. Only JPG, PNG, MP4, and MKV are allowed."));
+  }
+};
+
 const upload = multer({ storage });
 
 module.exports = upload;

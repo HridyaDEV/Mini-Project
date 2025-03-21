@@ -18,6 +18,7 @@ app.use('/user',userRoute)
 app.use('/auth',userAuthRoute)
 app.use("/complaint",complaintRoute)
 
+
 const url = process.env.DB_URL
 const connectDB = async () => {
     try {
