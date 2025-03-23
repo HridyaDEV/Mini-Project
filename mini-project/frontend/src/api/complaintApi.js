@@ -61,3 +61,46 @@ export const getComplaintById = async (id) => {
         return error.response ? error.response.data : { message: "Something went wrong" };
     }
 };
+
+export const getAllComplaints = async () => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found! Please log in.");
+            return [];
+        }
+
+        const response = await axios.get(`${url}/complaint/allcomplaints`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        console.log("API Response from Backend:", response.data); // Debugging
+        return response.data.complaints || []; // Return data directly
+    } catch (error) {
+        console.error("Error fetching complaints:", error.response?.data || error.message);
+        return [];
+    }
+};
+
+
+export const updateComplaintStatus = async (id, status) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            return { message: "Unauthorized: Please log in first" };
+        }
+
+        const response = await axios.put(
+            `${url}/complaint/complaints/${id}/status`,
+            { status },
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        console.log("Error updating complaint:", error.response?.data || error.message);
+        return { message: "Something went wrong" };
+    }
+};

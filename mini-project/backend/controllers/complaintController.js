@@ -103,3 +103,41 @@ exports.getComplaintById = async (req, res) => {
         res.status(500).json({ message: "Error fetching complaint", error: error.message });
     }
 };
+
+
+exports.getAllComplaints = async (req, res) => {
+    try {
+        // Ensure complaints is properly declared before use
+        const complaints = await Complaint.find({});
+        console.log("Fetched complaints from DB:", complaints); // Debugging log
+
+        // Send response only after complaints is properly fetched
+        return res.status(200).json({ complaints });
+    } catch (error) {
+        console.error("Error fetching all complaints:", error);
+        return res.status(500).json({ message: "Error fetching complaints", error: error.message });
+    }
+};
+
+
+exports.updateComplaintStatus = async (req, res) => {
+    try {
+        const { status } = req.body;
+        const { id } = req.params;
+
+        if (!["Solved", "Rejected"].includes(status)) {
+            return res.status(400).json({ message: "Invalid status update" });
+        }
+
+        const complaint = await Complaint.findByIdAndUpdate(id, { status }, { new: true });
+
+        if (!complaint) {
+            return res.status(404).json({ message: "Complaint not found" });
+        }
+
+        res.status(200).json({ message: "Complaint status updated", complaint });
+    } catch (error) {
+        console.error("Error updating complaint:", error);
+        res.status(500).json({ message: "Error updating complaint", error: error.message });
+    }
+};
