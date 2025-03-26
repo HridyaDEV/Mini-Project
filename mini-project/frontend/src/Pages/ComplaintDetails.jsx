@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getComplaintById } from "../api/complaintApi";
 import { ArrowLeftIcon } from "lucide-react";
 
@@ -7,19 +7,23 @@ function ComplaintDetails() {
     const { id } = useParams();
     const [complaint, setComplaint] = useState(null)
     const navigate = useNavigate()
-
+    const location = useLocation();
+    
+    const isAdmin = location.pathname.includes("/admin");
     useEffect(() => {
-        if (!id) {
-
-            console.error("Complaint ID is missing");
-            return;
-        }
+       
+       
         async function fetchComplaint() {
             const data = await getComplaintById(id);
             setComplaint(data);
         }
         fetchComplaint();
-    }, [id]);
+    }, [id])
+
+    const handleUpdateStatus = async (status) => {
+        await updateComplaintStatus(id, status)
+        setComplaint((prev) => ({ ...prev, status }))
+    }
 
     if (!complaint) {
         return 
@@ -52,16 +56,7 @@ function ComplaintDetails() {
                 <p className="text-lg mt-2">
                     <strong>Status:</strong> {complaint.status}
                 </p>
-                {/* {complaint.proof && (
-                    <div className="mt-4">
-                        <strong>Proof:</strong>
-                        <img
-                            src={`http://localhost:5111${complaint.proof}`}
-                            alt="Complaint Proof"
-                            className="w-full mt-2 rounded-lg"
-                        />
-                    </div>
-                )} */}
+                
                 {complaint.proof && (
     <div className="mt-4">
         <strong>Proof:</strong>
@@ -69,7 +64,7 @@ function ComplaintDetails() {
             <video
                 controls
                 className="w-full mt-2 rounded-lg"
-                style={{ maxHeight: "400px" }} // Adjust size as needed
+                style={{ maxHeight: "400px" }} 
             >
                 <source src={`http://localhost:5111${complaint.proof}`} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -84,7 +79,22 @@ function ComplaintDetails() {
         )}
     </div>
 )}
-
+   {isAdmin && (
+                    <div className="mt-6 flex space-x-4">
+                        <button
+                            onClick={() => handleUpdateStatus("Solved")}
+                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+                        >
+                            Solve
+                        </button>
+                        <button
+                            onClick={() => handleUpdateStatus("Rejected")}
+                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                        >
+                            Reject
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

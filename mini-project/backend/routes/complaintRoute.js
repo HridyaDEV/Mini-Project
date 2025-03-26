@@ -1,6 +1,6 @@
 const express = require("express")
 const { submitComplaint, getUserComplaints, getComplaintById, getAllComplaints, updateComplaintStatus } = require("../controllers/complaintController")
-const upload = require('../config/multer')
+const {upload} = require('../config/multer')
 
 const router = express.Router()
 

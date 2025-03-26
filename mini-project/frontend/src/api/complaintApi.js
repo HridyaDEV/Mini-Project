@@ -8,15 +8,29 @@ export const submitComplaint = async (data) => {
         const token = localStorage.getItem("token"); 
 
         if (!token) {
+            console.error("No token found! Please log in.");
             return { message: "Unauthorized: Please log in first" };
         }
+
+         // First, send complaint details without proof
+         const formData = new FormData();
+         formData.append("model", data.get("model"));
+         formData.append("complaint", data.get("complaint"));
+         formData.append("place", data.get("place"));
+         formData.append("date", data.get("date"));
+         if (data.get("proof")) {
+            formData.append("proof", data.get("proof")); // Attach proof file
+        }
+
 
         const response = await axios.post(`${url}/complaint/complaints`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}` // Send token in request headers
             },
-        });
+        })
+
+       
 
         return response;
     } catch (error) {

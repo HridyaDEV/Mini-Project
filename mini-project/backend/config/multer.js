@@ -1,17 +1,10 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
-// Configure Multer Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Save files in 'uploads' folder
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-  },
-});
+// Configure Multer to Store Files Temporarily in Memory
+const storage = multer.memoryStorage();
 
-// File filter to accept only images and videos
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "video/mp4", "video/mkv"];
   
@@ -22,6 +15,23 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage });
+const upload = multer({ storage, fileFilter });
 
-module.exports = upload;
+module.exports = { upload, saveFileToDisk };
+
+// Function to Save File After Complaint is Successfully Registered
+function saveFileToDisk(file) {
+  if (!file) return null;
+
+  const uploadPath = "uploads/";
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+  }
+
+  const filename = `proof-${Date.now()}${path.extname(file.originalname)}`;
+  const filepath = path.join(uploadPath, filename);
+
+  fs.writeFileSync(filepath, file.buffer); // Write file from memory to disk
+
+  return `/uploads/${filename}`;
+}

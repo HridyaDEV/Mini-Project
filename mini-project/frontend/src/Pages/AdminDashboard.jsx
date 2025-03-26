@@ -24,7 +24,6 @@ const AdminDashboard = () => {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
       <div className="flex-1 p-6 ml-64">
-        <div className="bg-white p-4 rounded-lg shadow-lg">Welcome to CivicEye Dashboard</div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           {complaintStats.map((item, index) => (

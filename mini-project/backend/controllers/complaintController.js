@@ -1,3 +1,4 @@
+const { saveFileToDisk } = require("../config/multer");
 const Complaint = require("../models/complaintModel")
 const jwt = require("jsonwebtoken");
 
@@ -30,10 +31,6 @@ exports.submitComplaint = async (req, res) => {
             return res.status(400).json({ message: "Provide all required fields" });
         }
 
-        if (!req.file) {
-            
-            return res.status(400).json({ message: "Provide proof file" });
-        }
 
         //  Save complaint in MongoDB
         const newComplaint = new Complaint({
@@ -42,19 +39,30 @@ exports.submitComplaint = async (req, res) => {
             complaint,
             place,
             date,
-            proof: `/uploads/${req.file.filename}`,
+            proof: null,
             status: "Pending"
         });
 
-        await newComplaint.save();
+     const savedComplaint=   await newComplaint.save()
+
+      // Now save the file (if uploaded) and update the complaint
+    if (req.file) {
+        const proofPath = saveFileToDisk(req.file);
+        savedComplaint.proof = proofPath;
+        await savedComplaint.save();
+      }
         
-        res.status(201).json({ message: "Complaint registered successfully!" });
+        res.status(201).json({ message: "Complaint registered successfully!" ,
+            complaintId : savedComplaint._id
+        });
 
     } catch (error) {
       
         res.status(500).json({ message: "Error occurred", error: error.message });
     }
 };
+
+
 
 exports.getUserComplaints = async (req, res) =>{
     try {
@@ -72,7 +80,7 @@ exports.getUserComplaints = async (req, res) =>{
 
 
     catch (error) {
-        console.error(" Token verification failed:", err.message);
+        console.error(" Token verification failed:", error.message);
         return res.status(401).json({ message: "Invalid token. Please log in again." });
     }
     const userId = decoded.userId
@@ -88,10 +96,31 @@ exports.getUserComplaints = async (req, res) =>{
 
 exports.getComplaintById = async (req, res) => {
     try {
-        const complaintId = req.params.id;
+        const complaintId = req.params.id
+        const token = req.header("Authorization")?.replace("Bearer ", "")
 
-        // Find the complaint by ID
-        const complaint = await Complaint.findById(complaintId).select("model complaint place date status createdAt proof");
+        if(!token){
+            return res.status(401).json({message:"Access denied! No token provided"})
+        }
+
+        let decoded
+        try {
+           decoded = jwt.verify(token,process.env.JWT_KEY) 
+        } catch (error) {
+            return res.status(401).json({ message: "Invalid token. Please log in again." })
+        }
+
+        const userRole = decoded.role
+        const userId = decoded.userId
+
+        let complaint
+        if(userRole === 'admin'){
+         complaint = await Complaint.findById(complaintId).select("model complaint place date status createdAt proof");
+
+          }
+          else{
+            complaint = await Complaint.findOne({ _id: complaintId, createdBy: userId }).select("model complaint place date status createdAt proof")
+          }
 
         if (!complaint) {
             return res.status(404).json({ message: "Complaint not found" });
@@ -109,7 +138,6 @@ exports.getAllComplaints = async (req, res) => {
     try {
         // Ensure complaints is properly declared before use
         const complaints = await Complaint.find({});
-        console.log("Fetched complaints from DB:", complaints); // Debugging log
 
         // Send response only after complaints is properly fetched
         return res.status(200).json({ complaints });
@@ -129,15 +157,15 @@ exports.updateComplaintStatus = async (req, res) => {
             return res.status(400).json({ message: "Invalid status update" });
         }
 
-        const complaint = await Complaint.findByIdAndUpdate(id, { status }, { new: true });
+        const complaint = await Complaint.findByIdAndUpdate(id, { status }, { new: true })
 
         if (!complaint) {
-            return res.status(404).json({ message: "Complaint not found" });
+            return res.status(404).json({ message: "Complaint not found" })
         }
 
-        res.status(200).json({ message: "Complaint status updated", complaint });
+        res.status(200).json({ message: "Complaint status updated", complaint })
     } catch (error) {
         console.error("Error updating complaint:", error);
-        res.status(500).json({ message: "Error updating complaint", error: error.message });
+        res.status(500).json({ message: "Error updating complaint", error: error.message })
     }
 };

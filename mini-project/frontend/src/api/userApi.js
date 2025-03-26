@@ -1,18 +1,7 @@
 
 import axios from "axios"
 
-
 const url= "http://localhost:5111"
-
-// export const register = async (data) => {
-//     try {
-//         const response = await axios.post(`${url}/user/register`,data)
-//         return response
-        
-//     } catch (error) {
-//         return error.message
-//     }
-// }
 
 export const viewUserProfile = async (id) =>{
     try {
@@ -33,4 +22,14 @@ export const updateUserProfile = async (id, profileData) => {
         console.error("Error updating user profile:", error);
         return null;
     }
-};
+}
+
+export const getAllUsers = async () =>{
+    try {
+        const response = await axios.get(`${url}/user/alluser`)
+        return response.data
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    return [];
+    }
+}

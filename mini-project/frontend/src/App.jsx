@@ -9,25 +9,29 @@ import MyComplaints from './Pages/MyComplaints'
 import AdminDashboard from './Pages/AdminDashboard'
 import ComplaintDetails from './Pages/ComplaintDetails'
 import ComplaintsAdmin from './Pages/ComplaintsAdmin'
+import UserManagement from './Pages/UserManagement'
 
 
 function App() {
- 
+
   return (
     <>
-    <BrowserRouter>
-   <Routes>
-    <Route path='/' element={<Home/>}/>
-    <Route path='/register' element={<Register/>}/>
-    <Route path='/login' element={<Login/>}/>
-    <Route path='/profile/:id?' element={<Profile/>}/>
-    <Route path='/complaint' element={<ComplaintRegister/>}/>
-    <Route path = '/mycomplaints' element = {<MyComplaints />}/>
-    <Route path = '/viewcomplaint/:id' element = {<ComplaintDetails />}/>
-    <Route path = '/admin' element = {<AdminDashboard/>}/>
-    <Route path='/complaintadmin' element={<ComplaintsAdmin/>}/>
-   </Routes>
-     </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/profile/:id?' element={<Profile />} />
+          <Route path='/complaint' element={<ComplaintRegister />} />
+          <Route path='/mycomplaints' element={<MyComplaints />} />
+          <Route path='/viewcomplaint/:id' element={<ComplaintDetails isAdmin={false} />} />
+
+          <Route path='/admin' element={<AdminDashboard />} />
+          <Route path='/complaintadmin' element={<ComplaintsAdmin />} />
+          <Route path='/admin/viewcomplaint/:id' element={<ComplaintDetails isAdmin={true} />} />
+          <Route path='/users' element={<UserManagement />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
