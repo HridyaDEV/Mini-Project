@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getComplaintById } from "../api/complaintApi";
+import { getComplaintById, updateComplaintStatus } from "../api/complaintApi";
 import { ArrowLeftIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 function ComplaintDetails() {
     const { id } = useParams();
     const [complaint, setComplaint] = useState(null)
     const navigate = useNavigate()
     const location = useLocation();
-    
-    const isAdmin = location.pathname.includes("/admin");
+        const isAdmin = location.pathname.includes("/admin")
+
     useEffect(() => {
-       
        
         async function fetchComplaint() {
             const data = await getComplaintById(id);
@@ -21,12 +21,24 @@ function ComplaintDetails() {
     }, [id])
 
     const handleUpdateStatus = async (status) => {
-        await updateComplaintStatus(id, status)
-        setComplaint((prev) => ({ ...prev, status }))
+
+        try {
+            const updatedComplaint = await updateComplaintStatus(id, status)
+            
+            if (updatedComplaint && updatedComplaint.message ==='Complaint status updated') {
+                setComplaint((prev) => ({ ...prev, status }))
+                toast.success(`complaint has been "${status}" successfully.`)
+            } else {
+                console.error("Failed to update status:", updatedComplaint.message)
+                toast.error("Failed to update status")
+            }
+        } catch (error) {
+            console.error("Error updating complaint status:", error);
+        }
     }
 
     if (!complaint) {
-        return 
+        return <p className="text-center text-gray-500 mt-6">Loading complaint details...</p>
     }
 
     return (

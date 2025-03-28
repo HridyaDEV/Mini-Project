@@ -17,7 +17,7 @@ const Sidebar = () => {
       </h1>
 
       <nav className="space-y-2 flex-grow">
-        <SidebarButton to="/admin" icon={<FiFileText />} text="Dashboard" />
+        <SidebarButton to="/admin" icon={<FiFileText />} text="Dashboard" exact={true} />
         <SidebarButton to="/admin/complaints" icon={<FiAlertCircle />} text="Complaints" />
         <SidebarButton to="/admin/users" icon={<FiUser />} text="User Management" />
         <SidebarButton to="/admin/reports" icon={<FiSettings />} text="Reports" />
@@ -35,10 +35,11 @@ const Sidebar = () => {
   );
 };
 
-const SidebarButton = ({ to, icon, text }) => {
+const SidebarButton = ({ to, icon, text, exact }) => {
   return (
     <NavLink
       to={to}
+      end={exact}
       className={({ isActive }) =>
         `flex items-center gap-2 py-3 px-5 rounded-lg transition duration-300 w-full text-left group ${
           isActive ? "bg-blue-700 text-white" : "hover:bg-blue-700 hover:text-white"

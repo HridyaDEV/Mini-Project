@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userlogin } from '../api/authApi';
+import toast from 'react-hot-toast';
 
 function Login() {
     const navigate = useNavigate();
@@ -28,12 +29,11 @@ function Login() {
             }
            
             } else{
-                    alert("invalid responses from server")
+                    toast.error("invalid responses from server")
             }
         }
          catch (error) {
-            console.error("Login Error:", error);
-            alert("Invalid credentials");
+            toast.error("Invalid credentials");
         }
     };
 

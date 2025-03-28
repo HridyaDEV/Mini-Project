@@ -8,4 +8,5 @@ router.get("/profile/:id",getUserProfile)
 router.put("/profile/:id",updateUserProfile)
 router.get("/alluser",getAllUsers)
 
+
 module.exports = router

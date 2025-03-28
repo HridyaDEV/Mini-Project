@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaClipboardList, FaHourglassHalf } from 'react-icons/fa';
 import { IoPersonSharp } from 'react-icons/io5';
 import { LuFileSearch } from 'react-icons/lu';
-import { MdLockOutline } from 'react-icons/md';
+import { MdEmail, MdLocationOn, MdLockOutline, MdPhone } from 'react-icons/md';
 import { PiNotePencilDuotone } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,6 +58,13 @@ function Home() {
     { icon: <LuFileSearch />, title: "Case Tracking", desc: "Monitor progress and updates on your report." },
 
   ]
+
+  const feedbacks = [
+    { name: "Ananya Sharma", comment: "A great platform for raising concerns! Very effective and user-friendly." },
+    { name: "Rahul Verma", comment: "I was able to track my complaint status easily. Very helpful!" },
+    { name: "Priya Mehta", comment: "Quick response from the authorities. Great initiative!" }
+  ];
+
   return (
     <>
       {/* Navbar */}
@@ -179,7 +186,28 @@ function Home() {
           ))}
         </div>
       </div>
-      <button onClick={()=> navigate("/admin")}>Admin</button>
+
+      <div className="py-10 bg-white text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">User Feedback</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {feedbacks.map((feedback, index) => (
+            <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+              <h3 className="text-xl font-semibold">{feedback.name}</h3>
+              <p className="text-gray-600 mt-2">"{feedback.comment}"</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+       {/* Contact Section */}
+       <div className="py-2 h-52 bg-gray-100 text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
+        <div className="flex flex-col items-center gap-4">
+          <p className="flex items-center gap-2 text-lg"><MdEmail /> support@civiceye.com</p>
+          <p className="flex items-center gap-2 text-lg"><MdPhone /> +1 234 567 890</p>
+          <p className="flex items-center gap-2 text-lg"><MdLocationOn /> 123 Civic Street, City, Country</p>
+        </div>
+      </div>
     </>
   );
 }

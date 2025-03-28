@@ -29,7 +29,21 @@ export const getAllUsers = async () =>{
         const response = await axios.get(`${url}/user/alluser`)
         return response.data
     } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching users:", error)
     return [];
     }
 }
+
+export const getUserById = async (id) => {
+    try {
+        
+        
+        const response = await axios.get(`${url}/user/profile/${id}`);
+        console.log(response);
+        
+        return response.data
+    } catch (error) {
+        console.error("Error fetching user details:", error)
+        return null
+    
+}}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../api/authApi';
+import toast from 'react-hot-toast';
 
 function Register() {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ function Register() {
                 const response = await register(formData)
 
                 if (response.status === 201) {
-                    alert("Sign up Successful!")
+                    toast.success("Sign up Successful!")
 
                     // Store token and user details in localStorage
                     localStorage.setItem("token", response.data.token);
@@ -57,7 +58,7 @@ function Register() {
                     localStorage.setItem("userEmail", formData.email);
 
                     navigate("/"); // Redirect to homepage
-                    window.dispatchEvent(new Event("storage"));  // 🚀 Notify other components that localStorage has changed
+                    window.dispatchEvent(new Event("storage"));  //Notify other components that localStorage has changed
                 } else {
                     setError({ general: response.data.error || "Registration failed" })
                 }

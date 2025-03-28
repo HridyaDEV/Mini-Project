@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { submitComplaint } from "../api/complaintApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from "lucide-react";
 
 function ComplaintRegister() {
   
+  const navigate = useNavigate()
   const [model, setModel] = useState("")
   const [complaint, setComplaint] = useState("")
   const [place, setPlace] = useState("")
@@ -38,23 +42,29 @@ function ComplaintRegister() {
       const response = await submitComplaint(formData);
 
       if (response?.status === 201) {
-        alert("Complaint submitted successfully!");
+        toast.success("Complaint submitted successfully!");
         setModel("");
         setComplaint("");
         setPlace("");
         setDate("");
         setProof(null);
       } else {
-        alert("Failed to submit complaint");
+        toast.error("Failed to submit complaint");
       }
     } catch (error) {
       console.error(error);
-      alert("Error submitting complaint");
+      toast.error("Error submitting complaint");
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 p-6">
+           <button 
+                onClick={() => navigate(-1)} 
+                className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-blue-600 transition mb-4 self-start ml-6"
+            >
+                <ArrowLeftIcon className="w-5 h-5 mr-2" /> Back
+            </button>
       <form className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg " onSubmit={handleSubmit}>
         <h1 className="text-gray-800 text-3xl font-bold mb-6 text-center">Report Issues Seamlessly</h1>
         <p className="text-gray-600 text-center mb-6">

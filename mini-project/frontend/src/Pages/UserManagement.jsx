@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { getAllUsers } from "../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const UserManagement = () => {
+    const navigate = useNavigate()
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const UserManagement = () => {
                   <th className="py-3 px-4 border">Email</th>
                   <th className="py-3 px-4 border">Mobile</th>
 
-                  <th className="py-3 px-4 border">Role</th>
+                  <th className="py-3 px-4 border">Action</th>
                 
                 </tr>
               </thead>
@@ -47,8 +49,9 @@ const UserManagement = () => {
                       <td className="py-3 px-4 border">{user.email}</td>
                       <td className="py-3 px-4 border">{user.mobile}</td>
 
-                      <td className="py-3 px-4 border text-blue-600">
-                        {user.role || "User"}
+                      <td className=" text-white">
+                       <button className="bg-blue-400  border hover:bg-blue-600 px-3 py-1 rounded"
+                       onClick={()=>navigate(`/admin/users/${user._id}`)}>View</button>
                       </td>
                       
                     </tr>

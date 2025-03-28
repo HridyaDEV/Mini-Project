@@ -34,7 +34,7 @@ exports.submitComplaint = async (req, res) => {
 
         //  Save complaint in MongoDB
         const newComplaint = new Complaint({
-            createdBy, // Automatically set user ID
+            createdBy, 
             model,
             complaint,
             place,
@@ -136,10 +136,8 @@ exports.getComplaintById = async (req, res) => {
 
 exports.getAllComplaints = async (req, res) => {
     try {
-        // Ensure complaints is properly declared before use
         const complaints = await Complaint.find({});
 
-        // Send response only after complaints is properly fetched
         return res.status(200).json({ complaints });
     } catch (error) {
         console.error("Error fetching all complaints:", error);
