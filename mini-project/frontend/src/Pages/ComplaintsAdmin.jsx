@@ -7,8 +7,8 @@ const ComplaintsAdmin = () => {
   const [complaints, setComplaints] = useState([]);
   const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
-  const [modelFilter, setModelFilter] = useState("")
-  const navigate = useNavigate()
+  const [modelFilter, setModelFilter] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchComplaints();
@@ -127,7 +127,7 @@ const ComplaintsAdmin = () => {
                         )}
                       </td>
                       <td
-                        className={`py-3 px-4  font-semibold ${
+                        className={`py-3 px-4 font-semibold ${
                           complaint.status === "Solved"
                             ? "text-green-600"
                             : complaint.status === "Rejected"
@@ -138,28 +138,34 @@ const ComplaintsAdmin = () => {
                         {complaint.status}
                       </td>
                       <td className="py-3 px-4 border-l border-r flex justify-center space-x-2">
+                        {complaint.status === "Pending" && (
+                          <>
+                            <button
+                              onClick={() =>
+                                handleUpdateStatus(complaint._id, "Solved")
+                              }
+                              className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
+                            >
+                              Solve
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleUpdateStatus(complaint._id, "Rejected")
+                              }
+                              className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
                         <button
                           onClick={() =>
-                            handleUpdateStatus(complaint._id, "Solved")
+                            navigate(`/admin/viewcomplaint/${complaint._id}`)
                           }
-                          className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
+                          className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
                         >
-                          Solve
+                          View
                         </button>
-                        <button
-                          onClick={() =>
-                            handleUpdateStatus(complaint._id, "Rejected")
-                          }
-                          className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
-                        >
-                          Reject
-                        </button>
-                        <button
-  onClick={() => navigate(`/admin/viewcomplaint/${complaint._id}`)}
-  className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg transition"
->
-  View
-</button>
                       </td>
                     </tr>
                   ))

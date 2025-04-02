@@ -118,3 +118,42 @@ export const updateComplaintStatus = async (id, status) => {
         return { message: "Something went wrong" };
     }
 };
+
+export const getComplaintStats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        return { message: "Unauthorized: Please log in first" };
+      }
+  
+      const response = await axios.get(`${url}/complaint/dashboard-status`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching user stats:", error.response?.data || error.message);
+      return error.response ? error.response.data : { message: "Something went wrong" };
+    }
+  };
+
+  export const getComplaintModel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        return { message: "Unauthorized: Please log in first" };
+      }
+  
+      const response = await axios.get(`${url}/complaint/dashboard-model`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching user stats:", error.response?.data || error.message);
+      return error.response ? error.response.data : { message: "Something went wrong" };
+    }
+  };
+  

@@ -60,20 +60,28 @@ function Home() {
   ]
 
   const feedbacks = [
-    { name: "Ananya Sharma", comment: "A great platform for raising concerns! Very effective and user-friendly." },
-    { name: "Rahul Verma", comment: "I was able to track my complaint status easily. Very helpful!" },
-    { name: "Priya Mehta", comment: "Quick response from the authorities. Great initiative!" }
+    { name: "Ananya", comment: "A great platform for raising concerns! Very effective and user-friendly." },
+    { name: "Rahul", comment: "I was able to track my complaint status easily. Very helpful!" },
+    { name: "Priya", comment: "Quick response from the authorities. Great initiative!" }
   ];
 
   return (
     <>
       {/* Navbar */}
-      <nav className='mt-5 flex justify-between items-center px-10'>
+      <nav className= 'fixed top-0 left-0 w-full bg-white shadow-md z-50  flex justify-between items-center px-10 py-4'>
         <h1 className="text-3xl font-extrabold">Civic<span className='text-blue-400'>Eye</span></h1>
         <ul className='flex gap-10'>
-          <li className="border border-transparent hover:border-black cursor-pointer">Home</li>
-          <li className="border border-transparent hover:border-black cursor-pointer">About</li>
-          <li className="border border-transparent hover:border-black cursor-pointer">Contact</li>
+          <li className="border border-transparent hover:border-black cursor-pointer">
+          <a href="#home">Home</a>
+          </li>
+          <li className="border border-transparent hover:border-black cursor-pointer">
+          <a href="#about">About</a>
+  
+          </li>
+          <li className="border border-transparent hover:border-black cursor-pointer">
+          <a href="#contact">Contact</a>
+
+          </li>
         </ul>
 
         {!isLoggedIn ? (
@@ -84,12 +92,11 @@ function Home() {
           </div>
         ) : (
           <div className='relative flex items-center gap-6'>
-            {/* <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/complaint")}>
-              File a Complaint
-            </button> */}
+            
             <button className="border px-4 py-1 rounded-md hover:bg-black hover:text-white" onClick={() => navigate("/mycomplaints")}>
               My Complaints
             </button>
+            
             <button onClick={() => setDropdownOpen(!dropdownOpen)}>
               <IoPersonSharp className='text-2xl border border-transparent hover:border-black cursor-pointer' />
             </button>
@@ -101,6 +108,12 @@ function Home() {
                     onClick={() => { navigate(`/profile`); setDropdownOpen(false); }}
                   >
                     View Profile
+                  </li>
+                  <li
+                    className='px-4 py-2 hover:bg-gray-200 cursor-pointer'
+                    onClick={()=>navigate("/feedback")}
+                  >
+                   Give Feedback
                   </li>
                   <li
                     className='px-4 py-2 hover:bg-gray-200 cursor-pointer'
@@ -116,7 +129,7 @@ function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="bg-black text-white flex flex-col items-center justify-center h-78 mt-4 px-4 text-center">
+      <div id="home" className="bg-black text-white flex flex-col items-center justify-center h-78 mt-4 px-4 text-center" >
         {isLoggedIn && <span className="font-bold text-2xl">Welcome, {userName}</span>}
         <h1 className="text-3xl font-semibold mb-2 mt-3">Safe Communities Start with You!</h1>
         <h1 className="text-3xl font-semibold mb-4">Report and Make an Impact</h1>
@@ -131,7 +144,7 @@ function Home() {
       </div>
 
       {/* about us */}
-      <div className="py-10 bg-white text-center px-6">
+      <div id= "about" className="py-10 bg-white text-center px-6">
         <h2 className="text-3xl font-bold mb-4">About Us</h2>
         <p className="text-gray-700 max-w-4xl mx-auto text-lg">
           Civic Eye is a platform dedicated to empowering communities by enabling citizens to report and track incidents efficiently.
@@ -188,7 +201,7 @@ function Home() {
       </div>
 
       <div className="py-10 bg-white text-center px-6">
-        <h2 className="text-3xl font-bold mb-6">User Feedback</h2>
+        <h2 className="text-3xl font-bold mb-6">Feedback</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {feedbacks.map((feedback, index) => (
             <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
@@ -200,12 +213,12 @@ function Home() {
       </div>
 
        {/* Contact Section */}
-       <div className="py-2 h-52 bg-gray-100 text-center px-6">
+       <div id="contact" className="py-2 h-52 bg-gray-100 text-center px-6">
         <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
         <div className="flex flex-col items-center gap-4">
           <p className="flex items-center gap-2 text-lg"><MdEmail /> support@civiceye.com</p>
           <p className="flex items-center gap-2 text-lg"><MdPhone /> +1 234 567 890</p>
-          <p className="flex items-center gap-2 text-lg"><MdLocationOn /> 123 Civic Street, City, Country</p>
+          <p className="flex items-center gap-2 text-lg"><MdLocationOn /> ABC Street, Kerala, India</p>
         </div>
       </div>
     </>

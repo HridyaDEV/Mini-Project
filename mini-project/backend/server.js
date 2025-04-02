@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const userRoute = require('./routes/userRoute');
 const userAuthRoute = require('./routes/userAuthRoute')
 const complaintRoute = require('./routes/complaintRoute')
+const feedbackRoute = require('./routes/feedbackRoute')
 
 
 app.use(cors())
@@ -17,6 +18,7 @@ app.use("/uploads", express.static("uploads"));
 app.use('/user',userRoute)
 app.use('/auth',userAuthRoute)
 app.use("/complaint",complaintRoute)
+app.use("/feedback",feedbackRoute)
 
 
 const url = process.env.DB_URL

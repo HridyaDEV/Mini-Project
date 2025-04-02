@@ -14,7 +14,7 @@ function ComplaintRegister() {
   const [proof, setProof] = useState(null)
 
   const complaintModels = [
-    "Traffic Viloation",
+    "Traffic Violation",
     "Public Disturbance",
     "Property Damage",
     "Domestic Violence",

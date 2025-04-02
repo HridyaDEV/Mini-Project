@@ -166,4 +166,39 @@ exports.updateComplaintStatus = async (req, res) => {
         console.error("Error updating complaint:", error);
         res.status(500).json({ message: "Error updating complaint", error: error.message })
     }
-};
+}
+
+exports.getComplaintStats = async (req,res) => {
+
+    try {
+        const totalComplaints = await Complaint.countDocuments()
+        const pendingComplaints = await Complaint.countDocuments({ status: "Pending" })
+        const solvedComplaints = await Complaint.countDocuments({ status: "Solved" })
+        const rejectedComplaints = await Complaint.countDocuments({ status: "Rejected" })
+
+        res.status(200).json({
+            totalComplaints,
+            pendingComplaints,
+            solvedComplaints,
+            rejectedComplaints,
+        })
+
+    } catch (error) {
+         console.error("Error fetching dashboard stats:", error)
+        res.status(500).json({ message: "Error fetching statistics", error: error.message })
+    }
+    }
+
+// ✅ Fetch Complaints by Model (Device Type)
+exports.getComplaintsByModel = async (req, res) => {
+    try {
+      const models = await Complaint.aggregate([
+        { $group: { _id: "$model", count: { $sum: 1 } } },
+        { $project: { name: "$_id", count: 1, _id: 0 } }
+      ]);
+  
+      res.json(models);
+    } catch (error) {
+      res.status(500).json({ error: "Server error" });
+    }
+  };

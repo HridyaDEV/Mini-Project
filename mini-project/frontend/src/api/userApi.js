@@ -47,3 +47,30 @@ export const getUserById = async (id) => {
         return null
     
 }}
+
+export const submitFeedback = async (data) =>{
+    try {
+        console.log("Submitting Feedback Data:", data);
+
+        const { userId, message } = data;
+        const response = await axios.post(`${url}/feedback/submit`, {
+             userId, // User ID from the existing user schema
+           message,
+           
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error submitting feedback:", error);
+        return null; 
+    }
+}
+
+export const getAllFeedbacks = async () => {
+    try {
+        const response = await axios.get(`${url}/feedback/all`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching all feedbacks for admin:", error);
+        return [];
+    }
+};
