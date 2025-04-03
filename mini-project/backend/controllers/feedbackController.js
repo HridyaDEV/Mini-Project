@@ -41,3 +41,24 @@ exports.getAllFeedbacks = async (req, res) => {
         res.status(500).json({ error: "Error fetching feedbacks" });
     }
 };
+
+exports.updateFeedbackStatus = async (req, res) => {
+    try {
+        const feedbackId = req.params.id;
+        const { status } = req.body; // Accepting status from request body
+
+        const feedback = await FeedbackModel.findById(feedbackId);
+
+        if (!feedback) {
+            return res.status(404).json({ error: "Feedback not found" });
+        }
+
+        feedback.status = status; // Updating status (true for approve, false for reject)
+        await feedback.save();
+
+        res.status(200).json({ message: `Feedback ${status ? "approved" : "rejected"} successfully!` });
+    } catch (error) {
+        console.error("Error updating feedback status:", error);
+        res.status(500).json({ message: "Error updating feedback status", error: error.message });
+    }
+};

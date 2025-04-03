@@ -5,6 +5,7 @@ import { LuFileSearch } from 'react-icons/lu';
 import { MdEmail, MdLocationOn, MdLockOutline, MdPhone } from 'react-icons/md';
 import { PiNotePencilDuotone } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
+import FeedbackSection from '../components/FeedbackSection';
 
 function Home() {
   const navigate = useNavigate();
@@ -32,9 +33,8 @@ function Home() {
 
   const handleLogout = () => {
     localStorage.removeItem("token")
-    localStorage.removeItem("name")
-    localStorage.removeItem("userEmail")
-    localStorage.removeItem("userFullName"); // Remove all stored user data
+    localStorage.removeItem("email")
+    localStorage.removeItem("fullName"); // Remove all stored user data
     localStorage.clear(); 
     setIsLoggedIn(false)
     setUserName("")
@@ -59,11 +59,7 @@ function Home() {
 
   ]
 
-  const feedbacks = [
-    { name: "Ananya", comment: "A great platform for raising concerns! Very effective and user-friendly." },
-    { name: "Rahul", comment: "I was able to track my complaint status easily. Very helpful!" },
-    { name: "Priya", comment: "Quick response from the authorities. Great initiative!" }
-  ];
+ 
 
   return (
     <>
@@ -200,17 +196,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="py-10 bg-white text-center px-6">
-        <h2 className="text-3xl font-bold mb-6">Feedback</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {feedbacks.map((feedback, index) => (
-            <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-              <h3 className="text-xl font-semibold">{feedback.name}</h3>
-              <p className="text-gray-600 mt-2">"{feedback.comment}"</p>
-            </div>
-          ))}
-        </div>
-      </div>
+     <FeedbackSection/>
 
        {/* Contact Section */}
        <div id="contact" className="py-2 h-52 bg-gray-100 text-center px-6">

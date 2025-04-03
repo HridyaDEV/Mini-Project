@@ -67,10 +67,11 @@ export const submitFeedback = async (data) =>{
 
 export const getAllFeedbacks = async () => {
     try {
-        const response = await axios.get(`${url}/feedback/all`);
-        return response.data;
+        const response = await axios.get(`${url}/feedback/all`)
+        console.log("API Response:", response.data);
+        return response
     } catch (error) {
         console.error("Error fetching all feedbacks for admin:", error);
-        return [];
+        return {data:[]};
     }
 };

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { submitFeedback } from "../api/userApi";
+import { submitFeedback } from "../api/feedbackApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from "lucide-react";
 
 const Feedback = () => {
+  const navigate = useNavigate();
   const [feedback, setFeedback] = useState("");
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId"); // Fetch user ID from localStorage
+    const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
     }
@@ -16,33 +20,40 @@ const Feedback = () => {
     e.preventDefault();
 
     if (!userId) {
-      alert("User not logged in!");
+      toast.error("User not logged in!");
       return;
     }
 
     try {
-
-        const feedbackData = {
-            userId: userId, // ✅ Ensure `userId` is included correctly
-            message: feedback, // ✅ Ensure message field is properly referenced
-        };
+      const feedbackData = {
+        userId: userId,
+        message: feedback,
+      };
 
       const response = await submitFeedback(feedbackData);
 
-      if (response ) {
-        alert("Feedback submitted successfully!");
+      if (response) {
+        toast.success("Feedback submitted successfully!");
         setFeedback("");
       } else {
-        alert("Failed to submit feedback.");
+        toast.error("Failed to submit feedback.");
       }
     } catch (error) {
       console.error("Error submitting feedback:", error);
-      alert("Error submitting feedback.");
+      toast.error("Error submitting feedback.");
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="relative flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      {/* Back Button Positioned at Top-Left */}
+      <button 
+        onClick={() => navigate(-1)} 
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-blue-600 transition"
+      >
+        <ArrowLeftIcon className="w-5 h-5 mr-2" /> Back
+      </button>
+
       <div className="max-w-lg w-full bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">Give Feedback</h2>
         <form onSubmit={handleSubmit}>
