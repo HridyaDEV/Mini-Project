@@ -9,7 +9,7 @@ export const submitFeedback = async (data) =>{
 
         const { userId, message } = data;
         const response = await axios.post(`${url}/feedback/submit`, {
-             userId, // User ID from the existing user schema
+             userId, 
            message,
            
         });
@@ -31,14 +31,15 @@ export const getAllFeedbacks = async () => {
     }
 };
 
-export const updateFeedbackStatus = async (id, status) => {
-    console.log(`Updating feedback ID: ${id} to status: ${status}`);
+export const updateFeedbackStatus = async (feedbackId, status) => {
     try {
-        const response = await axios.put(`${url}/feedback/status/${id}`, { status });
+
+        const response = await axios.put(`${url}/feedback/status/${feedbackId}`, { status });
         return response.data;
     } catch (error) {
         console.error("Error updating feedback status:", error);
         throw error;
     }
 };
+
 

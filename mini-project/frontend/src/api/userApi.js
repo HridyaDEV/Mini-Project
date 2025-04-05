@@ -54,7 +54,7 @@ export const submitFeedback = async (data) =>{
 
         const { userId, message } = data;
         const response = await axios.post(`${url}/feedback/submit`, {
-             userId, // User ID from the existing user schema
+             userId, 
            message,
            
         });

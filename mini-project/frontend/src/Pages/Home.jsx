@@ -1,51 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { FaCheckCircle, FaClipboardList, FaHourglassHalf } from 'react-icons/fa';
-import { IoPersonSharp } from 'react-icons/io5';
-import { LuFileSearch } from 'react-icons/lu';
-import { MdEmail, MdLocationOn, MdLockOutline, MdPhone } from 'react-icons/md';
-import { PiNotePencilDuotone } from 'react-icons/pi';
-import { useNavigate } from 'react-router-dom';
-import FeedbackSection from '../components/FeedbackSection';
+import React, { useState, useEffect } from 'react'
+import { FaCheckCircle, FaClipboardList, FaHourglassHalf } from 'react-icons/fa'
+import { IoPersonSharp } from 'react-icons/io5'
+import { LuFileSearch } from 'react-icons/lu'
+import { MdEmail, MdLocationOn, MdLockOutline, MdPhone } from 'react-icons/md'
+import { PiNotePencilDuotone } from 'react-icons/pi'
+import { useNavigate } from 'react-router-dom'
+import FeedbackSection from '../components/FeedbackSection'
+import Feedback from '../components/Feedback'
+
 
 function Home() {
-  const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"))
   const [userName, setUserName] = useState("")
-
-
+  
   useEffect(() => {
     const checkLoginStatus = () => {
 
-      const token = localStorage.getItem("token");
-      const storedName = localStorage.getItem("userFullName");
-      setIsLoggedIn(!!token);
-      setUserName(storedName || "");
+      const token = localStorage.getItem("token")
+      const storedName = localStorage.getItem("userFullName")
+      setIsLoggedIn(!!token)
+      setUserName(storedName || "")
     };
-
-    checkLoginStatus(); // Run on initial load
-
+   
+    checkLoginStatus() 
+    
     // Listen for localStorage changes (triggered after login/register)
-    window.addEventListener("storage", checkLoginStatus);
+    window.addEventListener("storage", checkLoginStatus)
 
-    return () => window.removeEventListener("storage", checkLoginStatus);
+    return () => window.removeEventListener("storage", checkLoginStatus)
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("email")
-    localStorage.removeItem("fullName"); // Remove all stored user data
-    localStorage.clear(); 
+    localStorage.removeItem("fullName") // Remove all stored user data
+    localStorage.clear()
     setIsLoggedIn(false)
     setUserName("")
     navigate("/")
-  };
+  }
+
 
   const cardSection = [
     { title: 'Complaints Registered', value: 1200, icon: <FaClipboardList className="text-3xl text-blue-500" /> },
-    { title: 'Solved Complaints', value: 950, icon: <FaCheckCircle className="text-3xl text-green-500" /> },
-    { title: 'Pending Complaints', value: 250, icon: <FaHourglassHalf className="text-3xl text-yellow-500" /> },
-  ];
+    { title: 'Solved Complaints', value: 1000, icon: <FaCheckCircle className="text-3xl text-green-500" /> },
+    { title: 'Pending Complaints', value: 200, icon: <FaHourglassHalf className="text-3xl text-yellow-500" /> },
+  ]
   const steps = [
     { title: "Step 1", desc: "Login to your account" },
     { title: "Step 2", desc: "Submit a report securely." },
@@ -58,8 +60,6 @@ function Home() {
     { icon: <LuFileSearch />, title: "Case Tracking", desc: "Monitor progress and updates on your report." },
 
   ]
-
- 
 
   return (
     <>
@@ -105,12 +105,7 @@ function Home() {
                   >
                     View Profile
                   </li>
-                  <li
-                    className='px-4 py-2 hover:bg-gray-200 cursor-pointer'
-                    onClick={()=>navigate("/feedback")}
-                  >
-                   Give Feedback
-                  </li>
+                 
                   <li
                     className='px-4 py-2 hover:bg-gray-200 cursor-pointer'
                     onClick={handleLogout}
@@ -197,6 +192,7 @@ function Home() {
       </div>
 
      <FeedbackSection/>
+     <Feedback/>
 
        {/* Contact Section */}
        <div id="contact" className="py-2 h-52 bg-gray-100 text-center px-6">

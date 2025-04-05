@@ -189,7 +189,7 @@ exports.getComplaintStats = async (req,res) => {
     }
     }
 
-// ✅ Fetch Complaints by Model (Device Type)
+// Fetch Complaints by Model 
 exports.getComplaintsByModel = async (req, res) => {
     try {
       const models = await Complaint.aggregate([

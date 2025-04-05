@@ -1,8 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { FiUser, FiFileText, FiSettings, FiAlertCircle, FiLogOut } from "react-icons/fi";
+import { NavLink, useNavigate } from "react-router-dom"
+import { FiUser, FiFileText, FiSettings, FiAlertCircle, FiLogOut } from "react-icons/fi"
 
 const Sidebar = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -23,7 +23,7 @@ const Sidebar = () => {
         <SidebarButton to="/admin/reports" icon={<FiSettings />} text="Reports" />
       </nav>
 
-      {/* Logout Button at Bottom */}
+      {/* Logout Button  */}
       <button
         onClick={handleLogout}
         className="flex items-center gap-2 py-3 px-5 rounded-lg transition duration-300 w-full text-left bg-red-600 hover:bg-red-700 text-white mt-auto"

@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { getAllFeedbacks } from '../api/feedbackApi';
+import React, { useEffect, useState } from 'react'
+import { getAllFeedbacks } from '../api/feedbackApi'
 
 const FeedbackSection = () => {
-    const [feedbacks, setFeedbacks] = useState([]);
+    const [feedbacks, setFeedbacks] = useState([])
 
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {
-                const response = await getAllFeedbacks(); // Use API function
-                console.log("API Response:", response); // Debugging
+                const response = await getAllFeedbacks()
                 
-                // Extract actual data array
-                const feedbackList = response?.data || []; 
+                const feedbackList = response?.data || [] 
                 
-                // Ensure it's an array and filter approved feedbacks
                 if (Array.isArray(feedbackList)) {
-                    setFeedbacks(feedbackList.filter(fb => fb.status === true));
+                    setFeedbacks(feedbackList.filter(fb => fb.status === true))
                 } else {
-                    console.error("Unexpected data format:", feedbackList);
-                    setFeedbacks([]); // Set empty array to avoid errors
+                    console.error("Unexpected data format:", feedbackList)
+                    setFeedbacks([])
                 }
             } catch (error) {
-                console.error("Error fetching feedbacks:", error);
+                console.error("Error fetching feedbacks:", error)
             }
         };
 
-        fetchFeedbacks(); // Call function inside useEffect
+        fetchFeedbacks()
     }, []);
 
     return (
@@ -36,7 +33,7 @@ const FeedbackSection = () => {
                     {feedbacks.map((feedback, index) => (
                         <div key={index} className="bg-gray-100 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
                             <h3 className="text-xl font-semibold">
-                                {feedback.user?.fullName || "Anonymous"} {/* Handle missing user data */}
+                                {feedback.user?.fullName || "Anonymous"} 
                             </h3>
                             <p className="text-gray-600 mt-2">"{feedback.message}"</p>
                         </div>

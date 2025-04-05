@@ -122,6 +122,7 @@ export const updateComplaintStatus = async (id, status) => {
 export const getComplaintStats = async () => {
     try {
       const token = localStorage.getItem("token");
+    
   
       if (!token) {
         return { message: "Unauthorized: Please log in first" };

@@ -13,7 +13,7 @@ const FeedbackSchema = new mongoose.Schema({
 
          status: {
             type: Boolean,
-            default: false, // ✅ Default status is false (admin needs to approve)
+            default: null, 
         },
    
    

@@ -7,35 +7,52 @@ const Reports = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
-      try {
-        const response = await getAllFeedbacks();
-        console.log("API Response:", response.data);
-        setFeedbacks(Array.isArray(response.data) ? response.data : []);
-      } catch (error) {
-        console.error("Error fetching feedbacks:", error);
-        setFeedbacks([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Function to fetch feedbacks
+  const fetchFeedbacks = async () => {
+    try {
+      const response = await getAllFeedbacks();
+      console.log("API Response:", response.data);
+  
+      setFeedbacks(
+        Array.isArray(response.data)
+          ? response.data.map(feedback => ({
+              ...feedback,
+              status: feedback.status !== true && feedback.status !== false ? null : feedback.status, 
+            }))
+          : []
+      );
+    } catch (error) {
+      console.error("Error fetching feedbacks:", error);
+      setFeedbacks([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
+  useEffect(() => {
     fetchFeedbacks();
   }, []);
 
-  const handleUpdateStatus = async (id, status) => {
+  // Function to update feedback status
+  const handleUpdateStatus = async (feedbackId, status) => {
     try {
-      await updateFeedbackStatus(id, status);
-      toast.success(`Feedback ${status ? "approved" : "rejected"} successfully!`);
+      console.log(`Updating feedback ID: ${feedbackId} to status: ${status}`);
+      const response = await updateFeedbackStatus(feedbackId, status);
+      console.log("Update API Response:", response);
 
-      // ✅ Update status permanently in state
-      setFeedbacks((prevFeedbacks) =>
-        prevFeedbacks.map((feedback) =>
-          feedback._id === id ? { ...feedback, status } : feedback
-        )
-      );
+      if (response && response.message === "Feedback status updated successfully") {
+        toast.success(`Feedback ${status ? "approved" : "rejected"} successfully!`);
 
+        //  Update state immediately
+        setFeedbacks((prevFeedbacks) =>
+          prevFeedbacks.map((feedback) =>
+            feedback._id === feedbackId ? { ...feedback, status } : feedback
+          )
+        );
+      } else {
+        toast.error("Failed to update feedback status.");
+      }
     } catch (error) {
       toast.error("Error updating feedback status!");
       console.error("Error updating feedback status:", error);
@@ -44,7 +61,6 @@ const Reports = () => {
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      
       {/* Sidebar */}
       <div className="w-64">
         <Sidebar />
@@ -80,30 +96,33 @@ const Reports = () => {
                       <td className="border border-gray-300 px-6 py-3">
                         <span
                           className={`px-3 py-1 rounded-md text-white text-sm ${
-                            feedback.status ? "bg-green-500" : "bg-yellow-500"
+                            feedback.status === true ? "bg-green-500" : feedback.status === false ? "bg-red-500" : "bg-yellow-500"
                           }`}
                         >
-                          {feedback.status ? "Approved" : "Pending"}
+                          {feedback.status === true ? "Approved" : feedback.status === false ? "Rejected" : "Pending"}
                         </span>
                       </td>
                       <td className="border border-gray-300 px-6 py-3">
-                        {feedback.status === false && (
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={() => handleUpdateStatus(feedback._id, true)}
-                              className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600"
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() => handleUpdateStatus(feedback._id, false)}
-                              className="px-4 py-2 rounded-md text-white bg-red-500 hover:bg-red-600"
-                            >
-                              Reject
-                            </button>
-                          </div>
-                        )}
-                      </td>
+  {/*  Show buttons only when status is NULL (pending) */}
+  {feedback.status === null ? (
+    <div className="flex space-x-2">
+      <button
+        onClick={() => handleUpdateStatus(feedback._id, true)}
+        className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600"
+      >
+        Approve
+      </button>
+      <button
+        onClick={() => handleUpdateStatus(feedback._id, false)}
+        className="px-4 py-2 rounded-md text-white bg-red-500 hover:bg-red-600"
+      >
+        Reject
+      </button>
+    </div>
+  ) : null}
+</td>
+
+
                     </tr>
                   ))}
                 </tbody>

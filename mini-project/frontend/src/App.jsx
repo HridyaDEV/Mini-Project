@@ -12,7 +12,7 @@ import ComplaintsAdmin from './Pages/ComplaintsAdmin'
 import UserManagement from './Pages/UserManagement'
 import { Toaster } from 'react-hot-toast'
 import AdminUserView from './Pages/AdminUserView'
-import Feedback from './Pages/Feedback'
+
 import Reports from './Pages/Reports'
 
 
@@ -27,7 +27,6 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile/:id?' element={<Profile />} />
-          <Route path='/feedback' element={<Feedback/>}/>
           <Route path='/complaint' element={<ComplaintRegister />} />
           <Route path='/mycomplaints' element={<MyComplaints />} />
           <Route path='/viewcomplaint/:id' element={<ComplaintDetails isAdmin={false} />} />

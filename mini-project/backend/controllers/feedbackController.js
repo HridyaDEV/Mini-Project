@@ -44,21 +44,25 @@ exports.getAllFeedbacks = async (req, res) => {
 
 exports.updateFeedbackStatus = async (req, res) => {
     try {
-        const feedbackId = req.params.id;
-        const { status } = req.body; // Accepting status from request body
+        const { id } = req.params;  // Extract feedback ID from request parameters
+        const { status } = req.body; // Extract status from request body
 
-        const feedback = await FeedbackModel.findById(feedbackId);
+        if (typeof status !== "boolean") {
+            return res.status(400).json({ error: "Invalid status value. It should be true or false." });
+        }
 
+        const feedback = await FeedbackModel.findById(id);
         if (!feedback) {
             return res.status(404).json({ error: "Feedback not found" });
         }
 
-        feedback.status = status; // Updating status (true for approve, false for reject)
-        await feedback.save();
+        feedback.status = status; // Update the status
+        const updatedFeedback = await feedback.save(); // Save the updated feedback
 
-        res.status(200).json({ message: `Feedback ${status ? "approved" : "rejected"} successfully!` });
+        res.status(200).json({ message: "Feedback status updated successfully", feedback: updatedFeedback });
     } catch (error) {
         console.error("Error updating feedback status:", error);
         res.status(500).json({ message: "Error updating feedback status", error: error.message });
     }
 };
+

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { submitFeedback } from "../api/feedbackApi";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeftIcon } from "lucide-react";
+import React, { useState, useEffect } from "react"
+import { submitFeedback } from "../api/feedbackApi"
+import toast from "react-hot-toast"
+
+
 
 const Feedback = () => {
-  const navigate = useNavigate();
-  const [feedback, setFeedback] = useState("");
-  const [userId, setUserId] = useState("");
+  
+  const [feedback, setFeedback] = useState("")
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -20,7 +20,7 @@ const Feedback = () => {
     e.preventDefault();
 
     if (!userId) {
-      toast.error("User not logged in!");
+      toast.error("User not logged in!")
       return;
     }
 
@@ -28,36 +28,29 @@ const Feedback = () => {
       const feedbackData = {
         userId: userId,
         message: feedback,
-      };
+      }
 
-      const response = await submitFeedback(feedbackData);
+      const response = await submitFeedback(feedbackData)
 
       if (response) {
-        toast.success("Feedback submitted successfully!");
-        setFeedback("");
+        toast.success("Feedback submitted successfully!")
+        setFeedback("")
       } else {
-        toast.error("Failed to submit feedback.");
+        toast.error("Failed to submit feedback.")
       }
     } catch (error) {
       console.error("Error submitting feedback:", error);
-      toast.error("Error submitting feedback.");
+      toast.error("Error submitting feedback.")
     }
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      {/* Back Button Positioned at Top-Left */}
-      <button 
-        onClick={() => navigate(-1)} 
-        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-blue-600 transition"
-      >
-        <ArrowLeftIcon className="w-5 h-5 mr-2" /> Back
-      </button>
-
+    <div className="relative flex justify-center items-center  p-4">
+      
       <div className="max-w-lg w-full bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">Give Feedback</h2>
         <form onSubmit={handleSubmit}>
-          <label className="block mb-2 text-gray-600 font-medium">Your Feedback:</label>
+         
           <textarea
             className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Write your feedback here..."
