@@ -7,6 +7,7 @@ import { PiNotePencilDuotone } from 'react-icons/pi'
 import { useNavigate } from 'react-router-dom'
 import FeedbackSection from '../components/FeedbackSection'
 import Feedback from '../components/Feedback'
+import { getPublicComplaintStats } from '../api/complaintApi'
 
 
 function Home() {
@@ -14,6 +15,11 @@ function Home() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"))
   const [userName, setUserName] = useState("")
+  const [stats, setStats] = useState({
+    totalComplaints: 0,
+    solvedComplaints: 0,
+    pendingComplaints: 0,
+  });
   
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -23,8 +29,15 @@ function Home() {
       setIsLoggedIn(!!token)
       setUserName(storedName || "")
     };
+
+    const fetchStats = async () => {
+      const data = await getPublicComplaintStats();
+      console.log("📊 Stats received:", data); 
+      setStats(data);
+    };
    
     checkLoginStatus() 
+    fetchStats()
     
     // Listen for localStorage changes (triggered after login/register)
     window.addEventListener("storage", checkLoginStatus)
@@ -44,9 +57,9 @@ function Home() {
 
 
   const cardSection = [
-    { title: 'Complaints Registered', value: 1200, icon: <FaClipboardList className="text-3xl text-blue-500" /> },
-    { title: 'Solved Complaints', value: 1000, icon: <FaCheckCircle className="text-3xl text-green-500" /> },
-    { title: 'Pending Complaints', value: 200, icon: <FaHourglassHalf className="text-3xl text-yellow-500" /> },
+    { title: 'Complaints Registered', value:  stats.totalComplaints, icon: <FaClipboardList className="text-3xl text-blue-500" /> },
+    { title: 'Solved Complaints', value: stats.solvedComplaints, icon: <FaCheckCircle className="text-3xl text-green-500" /> },
+    { title: 'Pending Complaints', value: stats.pendingComplaints, icon: <FaHourglassHalf className="text-3xl text-yellow-500" /> },
   ]
   const steps = [
     { title: "Step 1", desc: "Login to your account" },

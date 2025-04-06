@@ -4,6 +4,7 @@ const {upload} = require('../config/multer')
 
 const router = express.Router()
 
+router.get("/complaint-count", getComplaintStats)
 router.post("/complaints",upload.single('proof'), submitComplaint)
 router.get("/mycomplaints", getUserComplaints)
 router.get("/viewcomplaint/:id",  getComplaintById)

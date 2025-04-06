@@ -158,3 +158,13 @@ export const getComplaintStats = async () => {
     }
   };
   
+  export const getPublicComplaintStats = async () => {
+    try {
+      const response = await axios.get(`${url}/complaint/complaint-count`);
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching public stats:", error.response?.data || error.message);
+      return error.response ? error.response.data : { message: "Something went wrong" };
+    }
+  };
+  
