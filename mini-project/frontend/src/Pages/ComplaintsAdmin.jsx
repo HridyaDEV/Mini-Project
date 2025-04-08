@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
-import { getAllComplaints, updateComplaintStatus } from "../api/complaintApi";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import Sidebar from "../components/Sidebar"
+import { getAllComplaints, updateComplaintStatus } from "../api/complaintApi"
+import { useNavigate } from "react-router-dom"
 
 const ComplaintsAdmin = () => {
-  const [complaints, setComplaints] = useState([]);
-  const [filteredComplaints, setFilteredComplaints] = useState([]);
-  const [statusFilter, setStatusFilter] = useState("");
-  const [modelFilter, setModelFilter] = useState("");
+  const [complaints, setComplaints] = useState([])
+  const [filteredComplaints, setFilteredComplaints] = useState([])
+  const [statusFilter, setStatusFilter] = useState("")
+  const [modelFilter, setModelFilter] = useState("")
+  const [searchText, setSearchText] = useState("")
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +41,14 @@ const ComplaintsAdmin = () => {
       filtered = filtered.filter((c) => c.model === modelFilter);
     }
 
+    if (searchText.trim()) {
+      const lowerSearch = searchText.toLowerCase();
+      filtered = filtered.filter((c) =>
+        Object.values(c).some((value) =>
+          String(value).toLowerCase().includes(lowerSearch)
+        )
+      );
+    }
     setFilteredComplaints(filtered);
   };
 
@@ -81,11 +91,26 @@ const ComplaintsAdmin = () => {
                 )}
               </select>
 
+            
+
               <button
                 onClick={handleFilter}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
               >
                 Filter
+              </button>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="border px-3 py-2 rounded-md"
+              />
+              <button
+                onClick={handleFilter}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Search
               </button>
             </div>
           </div>
@@ -127,13 +152,12 @@ const ComplaintsAdmin = () => {
                         )}
                       </td>
                       <td
-                        className={`py-3 px-4 font-semibold ${
-                          complaint.status === "Solved"
-                            ? "text-green-600"
-                            : complaint.status === "Rejected"
+                        className={`py-3 px-4 font-semibold ${complaint.status === "Solved"
+                          ? "text-green-600"
+                          : complaint.status === "Rejected"
                             ? "text-red-600"
                             : "text-yellow-600"
-                        }`}
+                          }`}
                       >
                         {complaint.status}
                       </td>
