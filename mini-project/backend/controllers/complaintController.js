@@ -136,7 +136,7 @@ exports.getComplaintById = async (req, res) => {
 
 exports.getAllComplaints = async (req, res) => {
     try {
-        const complaints = await Complaint.find({});
+        const complaints = await Complaint.find({}).sort({ createdAt :-1});
 
         return res.status(200).json({ complaints });
     } catch (error) {
@@ -151,7 +151,7 @@ exports.updateComplaintStatus = async (req, res) => {
         const { status } = req.body;
         const { id } = req.params;
 
-        if (!["Solved", "Rejected"].includes(status)) {
+        if (!["Solved", "Rejected","Pending"].includes(status)) {
             return res.status(400).json({ message: "Invalid status update" });
         }
 

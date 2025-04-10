@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getComplaintById, updateComplaintStatus } from "../api/complaintApi";
-import { ArrowLeftIcon } from "lucide-react";
-import toast from "react-hot-toast";
-import { jsPDF } from "jspdf"; // Import jsPDF
+import React, { useEffect, useState } from "react"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { getComplaintById, updateComplaintStatus } from "../api/complaintApi"
+import { ArrowLeftIcon } from "lucide-react"
+import toast from "react-hot-toast"
+import { jsPDF } from "jspdf"
 
 function ComplaintDetails() {
     const { id } = useParams();
@@ -22,9 +22,9 @@ function ComplaintDetails() {
 
     const handleUpdateStatus = async (status) => {
         try {
-            const updatedComplaint = await updateComplaintStatus(id, status);
+            const updatedComplaint = await updateComplaintStatus(id, status)
             if (updatedComplaint && updatedComplaint.message === "Complaint status updated") {
-                setComplaint((prev) => ({ ...prev, status }));
+                setComplaint((prev) => ({ ...prev, status }))
                 toast.success(`Complaint has been "${status}" successfully.`);
             } else {
                 console.error("Failed to update status:", updatedComplaint.message);
@@ -125,44 +125,35 @@ function ComplaintDetails() {
                         )}
                     </div>
                 )}
-{isAdmin && complaint.status !== "Solved" && complaint.status !== "Rejected" && (
-    <div className="mt-6 flex flex-wrap gap-4 justify-center">
-        <button
-            onClick={() => handleUpdateStatus("Solved")}
-            className="bg-green-500 hover:bg-green-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        >
-            Solve
-        </button>
-        <button
-            onClick={() => handleUpdateStatus("Rejected")}
-            className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        >
-            Reject
-        </button>
-    </div>
-)}
+                {isAdmin && complaint.status !== "Solved" && complaint.status !== "Rejected" && (
+                    <div className="mt-6 flex flex-wrap gap-4 justify-center">
+                        <button
+                            onClick={() => handleUpdateStatus("Solved")}
+                            className="bg-green-500 hover:bg-green-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                        >
+                            Solve
+                        </button>
+                        <button
+                            onClick={() => handleUpdateStatus("Rejected")}
+                            className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                        >
+                            Reject
+                        </button>
+                    </div>
+                )}
 
-{/* PDF Download Button - Always Visible */}
-{isAdmin && (
-    <div className="mt-4 flex justify-center">
-        <button
-            onClick={handleDownloadPDF}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        >
-            Download PDF
-        </button>
-    </div>
-)}
+                {/* PDF Download Button - Always Visible */}
+                {isAdmin && (
+                    <div className="mt-4 flex justify-center">
+                        <button
+                            onClick={handleDownloadPDF}
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                        >
+                            Download PDF
+                        </button>
+                    </div>
+                )}
 
-
-
-                {/* PDF Download Button
-                <button
-                    onClick={handleDownloadPDF}
-                    className="mt-6 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                >
-                    Download PDF
-                </button> */}
             </div>
         </div>
     );
